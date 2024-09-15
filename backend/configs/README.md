@@ -1,1 +1,1 @@
-<!-- This directory will have any configs such as the database -->
+This directory will have any configs such as the database

@@ -1,1 +1,1 @@
-<!-- This directory will have account, registration, login, etc handler -->
+This directory will have account, registration, login, etc handler

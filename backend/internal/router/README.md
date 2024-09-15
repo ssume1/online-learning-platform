@@ -1,1 +1,1 @@
-<!-- This directory will have defined routes for the app -->
+This directory will have defined routes for the app

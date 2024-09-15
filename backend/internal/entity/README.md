@@ -1,1 +1,1 @@
-<!-- This directory will have schemas -->
+This directory will have schemas
