@@ -21,16 +21,14 @@ services:
     # env_file:
     #   - .env
 
-# Uncomment when the frontend is scaffolded
-
-  # frontend:
-  #   build:
-  #     context: ./frontend
-  #     dockerfile: Dockerfile
-  #   ports:
-  #     - 3000:3000
-  #   depends_on:
-  #     - backend
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - 3000:3000
+    depends_on:
+      - backend
     # env_file:
     #   - .env
 
