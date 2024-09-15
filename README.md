@@ -13,4 +13,5 @@ Make sure to have Docker installed on your machine.
     docker-compose up
     ```
 5. Access the backend at [http://localhost:4000](http://localhost:4000)
+6. Access the frontend at [http://localhost:3000](http://localhost:3000)
 
