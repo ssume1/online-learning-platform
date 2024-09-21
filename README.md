@@ -15,3 +15,12 @@ Make sure to have Docker installed on your machine.
 5. Access the backend at [http://localhost:4000](http://localhost:4000)
 6. Access the frontend at [http://localhost:3000](http://localhost:3000)
 
+In `./backend` root directory, create a `.env` file and add the following:
+```
+HOST_ADDR   = ":4000"
+DB_HOST     = postgres
+DB_USER     = postgres
+DB_PASSWORD = 1234
+DB_PORT     = 5432
+DB_NAME     = csudh_dev
+```
