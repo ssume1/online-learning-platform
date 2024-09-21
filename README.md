@@ -10,7 +10,7 @@ Make sure to have Docker installed on your machine.
 3. Navigate to the project directory.
 4. Run the following command to start the project:
     ```bash
-    docker-compose up
+    docker-compose up --build
     ```
 5. Access the backend at [http://localhost:4000](http://localhost:4000)
 6. Access the frontend at [http://localhost:3000](http://localhost:3000)
