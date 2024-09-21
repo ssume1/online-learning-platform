@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import logo from './logo.svg';
+import {BrowserRouter as Router, Routes, Route} from 'react-router-dom';
 import './App.css';
+import Navbar from './components/Navbar';
 
 
 export default function App() {
@@ -30,11 +31,14 @@ export default function App() {
   if (error) return <p>Error: {error.message}</p>;
 
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
+    <>
+      <Router>
+        <Navbar />
         <p>API Response: {message}</p>
-      </header>
-    </div>
+        <Routes>
+          <Route path ='/' exact />
+        </Routes>
+      </Router>
+    </>
   );
 }
