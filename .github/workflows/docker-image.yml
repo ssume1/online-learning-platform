@@ -18,27 +18,28 @@ jobs:
       run: docker compose build
 
     - name: Run the Docker container
-      run: |
-          MAX_RETRIES=3
-          CURRENT_RETRY=0
-          RETRY_DELAY=10  # Delay between retries
+      run: docker compose up
+      # run: |
+      #     MAX_RETRIES=3
+      #     CURRENT_RETRY=0
+      #     RETRY_DELAY=10  # Delay between retries
 
-          while [ $CURRENT_RETRY -lt $MAX_RETRIES ]; do
-              echo "Attempt number: $((CURRENT_RETRY + 1))"
-              docker compose up --abort-on-container-exit
-              EXIT_CODE=$?
+      #     while [ $CURRENT_RETRY -lt $MAX_RETRIES ]; do
+      #         echo "Attempt number: $((CURRENT_RETRY + 1))"
+      #         docker compose up --abort-on-container-exit
+      #         EXIT_CODE=$?
 
-              if [ $EXIT_CODE -eq 0 ]; then
-                  echo "Containers exited successfully."
-                  break
-              else
-                  echo "Containers exited with non-zero exit code. Retrying in $RETRY_DELAY seconds..."
-                  sleep $RETRY_DELAY
-                  CURRENT_RETRY=$((CURRENT_RETRY + 1))
-              fi
-          done
+      #         if [ $EXIT_CODE -eq 0 ]; then
+      #             echo "Containers exited successfully."
+      #             break
+      #         else
+      #             echo "Containers exited with non-zero exit code. Retrying in $RETRY_DELAY seconds..."
+      #             sleep $RETRY_DELAY
+      #             CURRENT_RETRY=$((CURRENT_RETRY + 1))
+      #         fi
+      #     done
 
-          if [ $CURRENT_RETRY -eq $MAX_RETRIES ]; then
-              echo "Maximum retries reached. Exiting..."
-              exit 1
-          fi
+      #     if [ $CURRENT_RETRY -eq $MAX_RETRIES ]; then
+      #         echo "Maximum retries reached. Exiting..."
+      #         exit 1
+      #     fi
