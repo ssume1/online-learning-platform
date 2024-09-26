@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import {BrowserRouter as Router, Routes, Route} from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import './App.css';
 import Navbar from './components/Navbar';
-
+import { HealthCheck } from './components/HealthCheck';
 
 export default function App() {
   const [message, setMessage] = useState('');
@@ -31,14 +31,12 @@ export default function App() {
   if (error) return <p>Error: {error.message}</p>;
 
   return (
-    <>
-      <Router>
-        <Navbar />
-        <p>API Response: {message}</p>
-        <Routes>
-          <Route path ='/' exact />
-        </Routes>
-      </Router>
-    </>
+    <Router>
+      <Navbar />
+      <Routes>
+        <Route path='/' element={<p>API Response: {message}</p>} />
+        <Route path='/health' element={<HealthCheck />} />
+      </Routes>
+    </Router>
   );
 }
