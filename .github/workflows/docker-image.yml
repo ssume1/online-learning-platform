@@ -30,12 +30,15 @@ jobs:
           sleep 5
         done
 
-    - name: Wait for backend to be ready
+    - name: Wait for frontend to be ready
       run: |
         echo "Waiting for frontend to be ready..."
-        until $(curl --output /dev/null --silent --head --fail http://localhost:3000); do
+        max_attempts=12  # Total of 60 seconds wait time
+        attempt=1
+        until $(curl --output /dev/null --silent --head --fail http://localhost:3000) || [ $attempt -ge $max_attempts ]; do
           printf '.'
           sleep 5
+          attempt=$((attempt + 1))
         done
 
     - name: Test backend connectivity
