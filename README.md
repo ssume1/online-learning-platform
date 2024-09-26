@@ -2,6 +2,7 @@
 
 [![Go](https://github.com/sandbox-science/online-learning-platform/actions/workflows/go.yml/badge.svg?branch=main)](https://github.com/sandbox-science/online-learning-platform/actions/workflows/go.yml)
 [![Node.js CI](https://github.com/sandbox-science/online-learning-platform/actions/workflows/node.js.yml/badge.svg)](https://github.com/sandbox-science/online-learning-platform/actions/workflows/node.js.yml)
+[![Docker Image CI](https://github.com/sandbox-science/online-learning-platform/actions/workflows/docker-image.yml/badge.svg)](https://github.com/sandbox-science/online-learning-platform/actions/workflows/docker-image.yml)
 
 This project aims to develop an online learning platform that would help educators create courses while providing students with an immersive and interactive learning experience. The platform will have features such as course creation tools, student enrollment processes, progress tracking, and interactive content delivery. The platform will highlight a modular design, ensuring scalability for future expansion and integration with additional features. Additionally, the platform will focus on user engagement strategies, including personalized learning paths, gamification such as learning streaks, and community-building features to increase the overall learning experience.
 
