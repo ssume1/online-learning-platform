@@ -30,7 +30,8 @@ services:
     depends_on:
       - backend
     environment:
-       - WATCHPACK_POLLING=true
+      - HOST=0.0.0.0
+      - WATCHPACK_POLLING=true
     volumes:
       - './frontend:/app'
 
