@@ -1,4 +1,4 @@
-package configs
+package database
 
 import (
 	"fmt"
@@ -10,17 +10,18 @@ import (
 	"gorm.io/gorm/logger"
 )
 
+var DB *gorm.DB
+
 // InitDB initializes the database connection and performs necessary migrations.
 func InitDB(cfg entity.Config) (*gorm.DB, error) {
 	dsn := fmt.Sprintf("host=%s user=%s password=%s port=%s dbname=%s sslmode=%s",
 		cfg.Host, cfg.User, cfg.Password, cfg.Port, cfg.DBName, cfg.SSLMode)
 
-	var db *gorm.DB
 	var err error
 
 	// Retry connection
 	for i := 0; i < 3; i++ {
-		db, err = gorm.Open(postgres.Open(dsn), &gorm.Config{
+		DB, err = gorm.Open(postgres.Open(dsn), &gorm.Config{
 			Logger: logger.Default.LogMode(logger.Info),
 		})
 		if err == nil {
@@ -35,17 +36,17 @@ func InitDB(cfg entity.Config) (*gorm.DB, error) {
 	}
 
 	// Perform schema migrations
-	return DatabaseMigration(db)
+	return DatabaseMigration(DB)
 }
 
 // DatabaseMigration performs the automatic migration for the schema entities
-func DatabaseMigration(db *gorm.DB) (*gorm.DB, error) {
-	err := db.AutoMigrate(&entity.Account{})
+func DatabaseMigration(DB *gorm.DB) (*gorm.DB, error) {
+	err := DB.AutoMigrate(&entity.Account{})
 	if err != nil {
 		return nil, err
 	}
 
 	fmt.Println("Migrated database!")
 
-	return db, nil
+	return DB, nil
 }
