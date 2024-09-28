@@ -6,11 +6,10 @@ import (
 	"os"
 
 	"github.com/gofiber/fiber/v2"
-	"github.com/gofiber/fiber/v2/middleware/cors"
-	"github.com/gofiber/fiber/v2/middleware/healthcheck"
 	"github.com/joho/godotenv"
-	"github.com/sandbox-science/online-learning-platform/configs"
+	configs "github.com/sandbox-science/online-learning-platform/configs/database"
 	"github.com/sandbox-science/online-learning-platform/internal/entity"
+	"github.com/sandbox-science/online-learning-platform/internal/router"
 )
 
 func main() {
@@ -38,31 +37,16 @@ func main() {
 		SSLMode:  os.Getenv("DB_SSLMODE"),
 	}
 
-	// Enable CORS for all routes
-	app.Use(cors.New(cors.Config{
-		AllowOrigins: "*",
-		AllowHeaders: "Origin, Content-Type, Accept",
-	}))
-
-	// Simple hello world test
-	app.Get("/", func(c *fiber.Ctx) error {
-		return c.SendString("Hello, World!")
-	})
-
-	// Add healthcheck middleware for /livez and /readyz
-	app.Use(healthcheck.New(healthcheck.Config{}))
-
-	// Custom health check endpoint
-	app.Get("/health", func(c *fiber.Ctx) error {
-		return c.JSON(fiber.Map{"status": "OK"})
-	})
-
 	// Initialize the database
 	db, err := configs.InitDB(conf)
 	if err != nil {
 		log.Fatalf("Failed to initialize database: %v", err)
 	}
-	fmt.Printf("%v", db) // remove this when db is used in the core service
+	// Use the db variable to avoid the "declared and not used" error
+	fmt.Printf("Database initialized: %v\n", db)
+
+	// Start the server
+	router.SetupRoutes(app)
 
 	if err := app.Listen(listenAddr); err != nil {
 		log.Fatal(err)
