@@ -36,18 +36,6 @@ jobs:
       - name: Check PostgreSQL service health
         run: |
           docker inspect --format='{{json .State.Health}}' $(docker ps -q --filter "ancestor=postgres")
-        
-      - name: Wait for PostgreSQL to be ready
-        run: |
-          echo "Waiting for PostgreSQL to be ready..."
-          for i in {1..30}; do
-            if pg_isready -h postgres -U postgres; then
-              echo "PostgreSQL is ready!"
-              break
-            fi
-            echo "Waiting..."
-            sleep 5
-          done
 
       - name: Test PostgreSQL connection
         run: |
