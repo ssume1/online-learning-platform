@@ -21,6 +21,11 @@ func TestInitDB(t *testing.T) {
 	// Call InitDB function
 	db, err := InitDB(cfg)
 
+	tx := db.Begin()
+
+	// Rollback the transaction
+	defer tx.Rollback()
+
 	// Test for error
 	assert.NoError(t, err, "Expected no error when initializing the database")
 
