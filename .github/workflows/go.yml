@@ -9,22 +9,6 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    
-    services:
-      postgres:
-        image: postgres:latest
-        env:
-          POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: 1234
-          POSTGRES_DB: csudh_test
-        ports:
-          - 5432:5432
-        options: >-
-          --health-cmd "pg_isready -U postgres"
-          --health-interval 2s
-          --health-timeout 1s
-          --health-retries 5
-
     steps:
       - uses: actions/checkout@v4
 
@@ -37,8 +21,7 @@ jobs:
         run: cd backend && go build -v ./...
 
       - name: Test with Retry
-        run: |
-          for i in {1..2}; do
-            echo "Running test iteration $i"
-            cd backend && go test -v ./... && break || sleep 5
-          done
+        run: cd backend && go test -v ./...
+        
+      - name: test
+        run: cd backend && go test -v ./...
