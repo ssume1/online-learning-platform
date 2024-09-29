@@ -10,7 +10,7 @@ import (
 func TestInitDB(t *testing.T) {
 	// Mock database configuration
 	cfg := entity.Config{
-		Host:     "postgres",
+		Host:     "localhost",
 		User:     "postgres",
 		Password: "1234",
 		Port:     "5432",
