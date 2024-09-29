@@ -10,7 +10,7 @@ import (
 
 func TestInitApp(t *testing.T) {
 	// Set environment variables for testing
-	os.Setenv("DB_HOST", "localhost")
+	os.Setenv("DB_HOST", "postgres")
 	os.Setenv("DB_PORT", "5432")
 	os.Setenv("DB_USER", "postgres")
 	os.Setenv("DB_PASSWORD", "1234")
