@@ -2,12 +2,10 @@ package database
 
 import (
 	"fmt"
-	"time"
 
 	"github.com/sandbox-science/online-learning-platform/internal/entity"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
-	"gorm.io/gorm/logger"
 )
 
 var DB *gorm.DB
@@ -19,20 +17,10 @@ func InitDB(cfg entity.Config) (*gorm.DB, error) {
 
 	var err error
 
-	// Retry connection
-	for i := 0; i < 3; i++ {
-		DB, err = gorm.Open(postgres.Open(dsn), &gorm.Config{
-			Logger: logger.Default.LogMode(logger.Info),
-		})
-		if err == nil {
-			break
-		}
-		fmt.Printf("Failed to connect to database (attempt %d): %v\n", i+1, err)
-		time.Sleep(2 * time.Second) // Wait before retrying
-	}
-
+	// Connect to the database
+	DB, err = gorm.Open(postgres.Open(dsn), &gorm.Config{})
 	if err != nil {
-		return nil, fmt.Errorf("failed to connect to database after retries: %v", err)
+		return nil, fmt.Errorf("failed to connect to database: %v", err)
 	}
 
 	// Perform schema migrations
