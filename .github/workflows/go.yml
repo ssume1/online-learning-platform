@@ -21,8 +21,8 @@ jobs:
           - 5432:5432
         options: >-
           --health-cmd "pg_isready -U postgres" 
-          --health-interval 10s 
-          --health-timeout 5s 
+          --health-interval 2s 
+          --health-timeout 1s 
           --health-retries 5
 
     steps:
@@ -33,14 +33,33 @@ jobs:
         with:
           go-version: '1.23'
 
+      - name: Check PostgreSQL service health
+        run: |
+          docker inspect --format='{{json .State.Health}}' $(docker ps -q --filter "ancestor=postgres")
+        
       - name: Wait for PostgreSQL to be ready
         run: |
           echo "Waiting for PostgreSQL to be ready..."
-          until pg_isready -h postgres -U postgres; do
-            printf '.'
+          for i in {1..30}; do
+            if pg_isready -h postgres -U postgres; then
+              echo "PostgreSQL is ready!"
+              break
+            fi
+            echo "Waiting..."
             sleep 5
           done
 
+      - name: Test PostgreSQL connection
+        run: |
+          for i in {1..30}; do
+            if PGPASSWORD=password psql -h postgres -U postgres -d csudh_test -c '\q'; then
+              echo "Connected to PostgreSQL!"
+              break
+            fi
+            echo "Waiting for connection..."
+            sleep 5
+          done
+        
       - name: Build
         run: cd backend && go build -v ./...
 
