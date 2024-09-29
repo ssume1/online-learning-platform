@@ -37,4 +37,8 @@ jobs:
         run: cd backend && go build -v ./...
 
       - name: Test
-        run: cd backend && go test -v ./...
+        run: |
+          for i in {1..2}; do
+            echo "Running test iteration $i"
+            cd backend && go test -v ./...
+          done
