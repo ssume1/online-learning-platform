@@ -14,15 +14,19 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-    - name: Set up Go
-      uses: actions/setup-go@v4
-      with:
-        go-version: '1.23'
+      - name: Set up Go
+        uses: actions/setup-go@v4
+        with:
+          go-version: '1.23'
 
-    - name: Build
-      run: cd backend && go build -v ./...
+      - name: Check if Docker Image CI completed successfully
+        run: |
+          echo "Docker Image CI workflow status: ${{ github.event.workflow_run.conclusion }}"
 
-    - name: Test
-      run: cd backend && go test -v ./...
+      - name: Build
+        run: cd backend && go build -v ./...
+
+      - name: Test
+        run: cd backend && go test -v ./...
