@@ -10,22 +10,12 @@ import (
 	configs "github.com/sandbox-science/online-learning-platform/configs/database"
 	"github.com/sandbox-science/online-learning-platform/internal/entity"
 	"github.com/sandbox-science/online-learning-platform/internal/router"
+	"gorm.io/gorm"
 )
 
-func main() {
+// initServer initializes the server and returns the Fiber server and the initialized database connection.
+func initServer() (*fiber.App, *gorm.DB, error) {
 	app := fiber.New(fiber.Config{})
-
-	// Load the environment variables
-	err := godotenv.Load()
-	if err != nil {
-		log.Fatal("Error loading .env file")
-	}
-
-	// Set the listen address
-	listenAddr := os.Getenv("HOST_ADDR")
-	if len(listenAddr) == 0 {
-		listenAddr = ":8080"
-	}
 
 	// Initialize the database configuration
 	conf := entity.Config{
@@ -40,14 +30,36 @@ func main() {
 	// Initialize the database
 	db, err := configs.InitDB(conf)
 	if err != nil {
-		log.Fatalf("Failed to initialize database: %v", err)
+		return nil, nil, fmt.Errorf("failed to initialize database: %v", err)
 	}
-	// Use the db variable to avoid the "declared and not used" error
-	fmt.Printf("Database initialized: %v\n", db)
 
-	// Start the server
+	fmt.Printf("Database initialized!\n")
+
+	// Setup routes
 	router.SetupRoutes(app)
 
+	return app, db, nil
+}
+
+func main() {
+	// Load the environment variables
+	err := godotenv.Load()
+	if err != nil {
+		log.Fatal("Error loading .env file")
+	}
+
+	// Initialize the server
+	app, _, err := initServer()
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	listenAddr := os.Getenv("HOST_ADDR")
+	if len(listenAddr) == 0 {
+		listenAddr = ":8080"
+	}
+
+	// Start the server
 	if err := app.Listen(listenAddr); err != nil {
 		log.Fatal(err)
 	}
