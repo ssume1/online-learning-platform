@@ -3,12 +3,16 @@ services:
     image: "${POSTGRES_IMAGE:-postgres:15.3-bookworm}"
     volumes:
       - learning-platform-data:/var/lib/postgresql/data
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
     environment:
       POSTGRES_USER: "${POSTGRES_USER:-postgres}"
       POSTGRES_PASSWORD: "${POSTGRES_PASSWORD:-1234}"
-      POSTGRES_HOST: "${POSTGRES_HOST:-localhost}"
-      POSTGRES_PORT: "${POSTGRES_PORT:-5432}"
       POSTGRES_DB: "${POSTGRES_DB:-csudh_dev}"
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "${POSTGRES_USER:-postgres}"]
+      interval: 2s
+      timeout: 1s
+      retries: 3
 
   backend:
     build:
@@ -17,9 +21,12 @@ services:
     ports:
       - 4000:4000
     depends_on:
-      - postgres
+      postgres:
+        condition: service_healthy  # Wait until postgres is healthy
     env_file:
       - ./backend/.env
+    volumes:
+      - ./backend:/app
 
   frontend:
     build:
