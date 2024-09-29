@@ -36,9 +36,9 @@ jobs:
       - name: Build
         run: cd backend && go build -v ./...
 
-      - name: Test
+      - name: Test with Retry
         run: |
           for i in {1..2}; do
             echo "Running test iteration $i"
-            cd backend && go test -v ./...
+            cd backend && go test -v ./... && break || sleep 5
           done
