@@ -15,3 +15,9 @@ func HashPassword(user *entity.Account) error {
 	user.Password = string(hashedPassword)
 	return nil
 }
+
+// CheckPasswordHash checks if the hashed password matches the plain text password.
+func CheckPasswordHash(password, hash string) error {
+
+	return bcrypt.CompareHashAndPassword([]byte(hash), []byte(password))
+}
