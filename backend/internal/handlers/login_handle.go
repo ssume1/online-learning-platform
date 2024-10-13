@@ -19,21 +19,17 @@ func Login(c *fiber.Ctx) error {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"message": "Invalid input"})
 	}
 
-	// Find user with email
 	var user entity.Account
-
 	if err := database.DB.Where("email = ?", data.Email).First(&user).Error; err != nil {
-
-		return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{"message": "Invalid email or password"})
+		// Email not found
+		return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{"message": "Incorrect email"})
 	}
 
 	// Check if the password matches
-
 	if err := utils.CheckPasswordHash(data.Password, user.Password); err != nil {
-
-		return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{"message": "Invalid email or password"})
+		// Password doesn't match
+		return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{"message": "Incorrect password"})
 	}
-
 	// Successful login
 
 	return c.JSON(fiber.Map{
