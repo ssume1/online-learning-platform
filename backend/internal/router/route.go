@@ -67,6 +67,7 @@ func SetupRoutes(app *fiber.App) {
 		return c.JSON(fiber.Map{"status": "OK"})
 	})
 
-	// Define route for user registration
+	// Define routes
 	app.Post("/register", handlers.Register)
+	app.Post("/login", handlers.Login)
 }
