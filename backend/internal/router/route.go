@@ -56,7 +56,7 @@ func SetupRoutes(app *fiber.App) {
 
 	// Simple hello world test
 	app.Get("/", func(c *fiber.Ctx) error {
-		return c.SendString("Hello, World!")
+		return c.SendString("Hello, Dominguez Hills!")
 	})
 
 	// Add healthcheck middleware for /livez and /readyz
