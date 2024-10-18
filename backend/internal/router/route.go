@@ -56,7 +56,7 @@ func SetupRoutes(app *fiber.App) {
 
 	// Simple hello world test
 	app.Get("/", func(c *fiber.Ctx) error {
-		return c.SendString("Hello, World!")
+		return c.SendString("Hello, Dominguez Hills!")
 	})
 
 	// Add healthcheck middleware for /livez and /readyz
@@ -70,6 +70,8 @@ func SetupRoutes(app *fiber.App) {
 	// Define routes
 	app.Post("/register", handlers.Register)
 	app.Post("/login", handlers.Login)
+  app.Delete("/delete", handlers.Delete)
+	app.Get("/user/:user_id", handlers.User)
 	
 	// Routes for updating user information
 	app.Put("/update-username", handlers.UpdateUsername)   // Update username

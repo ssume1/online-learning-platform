@@ -1,9 +1,10 @@
 import React from 'react';
 import { Navigate } from 'react-router-dom';
+import Cookies from 'js-cookie';
 
 // Check if user is authenticated
 const isAuthenticated = () => {
-  const token = localStorage.getItem('token');
+  const token = Cookies.get('token');
   return token ? true : false;
 };
 
