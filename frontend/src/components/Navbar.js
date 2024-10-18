@@ -1,4 +1,4 @@
-import React,{useState} from "react";
+import React,{useEffect, useState} from "react";
 import { Link } from "react-router-dom";
 import "./Navbar.css";
 import { Button } from "./Button";
@@ -7,10 +7,19 @@ function Navbar() {
     const [mobileMenuActive, setMobileMenuActive] = useState(false);
     /*Once user accounts are implemented on the backend add a useEffect to 
     fetch if the user is logged in and update the variable below */
-    const [isLoggedIn] = useState(false);
-
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+    
     const handleMobileMenuClick = () => setMobileMenuActive(!mobileMenuActive);
     const closeMobileMenu = () => setMobileMenuActive(false);
+
+    useEffect(() => {
+        const checkLoggedInStatus = () => {
+            const token = localStorage.getItem('token');
+            setIsLoggedIn(!!token);
+        };
+
+        checkLoggedInStatus();
+    }, []);
 
     return (
         <nav className="navbar">
