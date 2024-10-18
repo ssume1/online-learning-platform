@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { CheckCircleIcon, XCircleIcon } from '@heroicons/react/24/solid';
+import Cookies from 'js-cookie'
 import Notiflix from 'notiflix';
 
 export function Login() {
@@ -7,7 +7,6 @@ export function Login() {
         email: "",
         password: "",
     });
-    const [message, setMessage] = useState("");
     const [showPassword, setShowPassword] = useState(false);
 
     const toggleShowPassword = () => {
@@ -36,20 +35,18 @@ export function Login() {
 
             const data = await response.json();
             if (response.ok) {
-                Notiflix.Notify.success("Login successful! Redirecting to Homepage...");
+                Notiflix.Notify.success("Login successful! Redirecting to Dashboard...");
+                Cookies.set('token', data.token, { expires: 1, sameSite: 'none', secure: true });
                 setTimeout(() => {
-                    window.location.href = "/";
-                }, 2000);
+                    window.location.href = "/courses";
+                }, 1000);
             } else {
-                Notiflix.Notify.failure(data.message || "Registration failed");
+                Notiflix.Notify.failure(data.message || "Login failed");
             }
         } catch (error) {
-            Notiflix.Notify.failure("Error occurred during registration");
+            Notiflix.Notify.failure("Error occurred during login");
         }
     };
-
-    const checkMark = <CheckCircleIcon className="h-4 w-4 text-green-500" />;
-    const xMark     = <XCircleIcon className="h-4 w-4 text-red-500" />;
 
     return (
         <div className="min-h-screen bg-gray-100 flex items-center justify-center">
@@ -92,7 +89,6 @@ export function Login() {
                         Login
                     </button>
                 </form>
-                {message && <p className="mt-4 text-red-500 text-center">{message}</p>}
             </div>
         </div>
     );
