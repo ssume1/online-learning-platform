@@ -1,36 +1,41 @@
-import React,{useEffect, useState} from "react";
-import { Link } from "react-router-dom";
 import "./Navbar.css";
+
+import { FaSchool, FaBars, FaTimes } from "react-icons/fa";
+import React, { useEffect, useState, useCallback } from "react";
+import { Link } from "react-router-dom";
 import { Button } from "./Button";
-import { FaSchool,FaBars,FaTimes } from "react-icons/fa";
+import Cookies from 'js-cookie';
+
 function Navbar() {
     const [mobileMenuActive, setMobileMenuActive] = useState(false);
-    /*Once user accounts are implemented on the backend add a useEffect to 
-    fetch if the user is logged in and update the variable below */
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
-    
+    const [isLoggedIn, setIsLoggedIn]             = useState(false);
+
     const handleMobileMenuClick = () => setMobileMenuActive(!mobileMenuActive);
-    const closeMobileMenu = () => setMobileMenuActive(false);
+    const closeMobileMenu       = () => setMobileMenuActive(false);
+
+    const checkLoggedInStatus = useCallback(() => {
+        const token = Cookies.get('token');
+        setIsLoggedIn(!!token);
+    }, []);
 
     useEffect(() => {
-        const checkLoggedInStatus = () => {
-            const token = localStorage.getItem('token');
-            setIsLoggedIn(!!token);
-        };
-
         checkLoggedInStatus();
-    }, []);
+    }, [checkLoggedInStatus]);
 
     return (
         <nav className="navbar">
             <Link to="/" className="navbar-logo" onClick={closeMobileMenu}>
-                    <FaSchool />&nbsp;OLP
+                <FaSchool />&nbsp;OLP
             </Link>
             <div className="navbar-container">
-                <div className="menu-icon" onClick={handleMobileMenuClick}>
-                    {mobileMenuActive ? <FaTimes style={{color: "white"}}/> : <FaBars style={{color: "white"}} />}
+                <div
+                    className="menu-icon"
+                    onClick={handleMobileMenuClick}
+                    aria-expanded={mobileMenuActive}
+                >
+                    {mobileMenuActive ? <FaTimes style={{ color: "white" }} /> : <FaBars style={{ color: "white" }} />}
                 </div>
-                <ul className= {mobileMenuActive ? "nav-menu active" : "nav-menu"}>
+                <ul className={mobileMenuActive ? "nav-menu active" : "nav-menu"}>
                     <li className="nav-item">
                         <Link to="/" className="nav-links" onClick={closeMobileMenu}>
                             Home
@@ -41,30 +46,32 @@ function Navbar() {
                             Courses
                         </Link>
                     </li>
-                    {/*If there is a user logged in replace the sign up and login buttons with the account button*/}
-                    {!isLoggedIn ? 
+
+                    {/* Conditional rendering for account vs login/signup */}
+                    {isLoggedIn ? (
                         <li className="nav-item">
-                            <Link to="/login" className="nav-btns" onClick={closeMobileMenu}> 
-                                <Button buttonStyle='btn--outline' buttonSize='btn--large'>Log In</Button>
-                            </Link>
-                        </li>: 
-                        <li className="nav-item">
-                            <Link to="/account" className="nav-btns" onClick={closeMobileMenu}> 
+                            <Link to="/account" className="nav-btns" onClick={closeMobileMenu}>
                                 <Button buttonStyle='btn--outline' buttonSize='btn--large'>Account</Button>
                             </Link>
                         </li>
-                    }
-                    {!isLoggedIn ? 
-                        <li className="nav-item">
-                            <Link to="/signup" className="nav-btns" onClick={closeMobileMenu}> 
-                                <Button buttonStyle='btn--outline' buttonSize='btn--large'>Sign Up</Button>
-                            </Link>
-                        </li> : null
-                    }
+                    ) : (
+                        <>
+                            <li className="nav-item">
+                                <Link to="/login" className="nav-btns" onClick={closeMobileMenu}>
+                                    <Button buttonStyle='btn--outline' buttonSize='btn--large'>Log In</Button>
+                                </Link>
+                            </li>
+                            <li className="nav-item">
+                                <Link to="/signup" className="nav-btns" onClick={closeMobileMenu}>
+                                    <Button buttonStyle='btn--outline' buttonSize='btn--large'>Sign Up</Button>
+                                </Link>
+                            </li>
+                        </>
+                    )}
                 </ul>
             </div>
         </nav>
     )
 }
 
-export default Navbar
+export default Navbar;
