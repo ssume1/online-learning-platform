@@ -37,6 +37,7 @@ export function Login() {
             if (response.ok) {
                 Notiflix.Notify.success("Login successful! Redirecting to Dashboard...");
                 Cookies.set('token', data.token, { expires: 1, sameSite: 'none', secure: true });
+                Cookies.set('userId', data.user.ID, { sameSite: 'none', secure: true });
                 setTimeout(() => {
                     window.location.href = "/courses";
                 }, 1000);
